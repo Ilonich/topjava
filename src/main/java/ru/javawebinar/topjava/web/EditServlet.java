@@ -30,6 +30,7 @@ public class EditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(Integer.parseInt(req.getParameter("id")), Formatters.parse(req.getParameter("dob")), req.getParameter("description"), Integer.parseInt(req.getParameter("calories")));
         MealSimpleRepo.update(meal);
         resp.sendRedirect("/topjava/meals");

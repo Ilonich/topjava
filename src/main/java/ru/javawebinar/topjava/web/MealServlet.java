@@ -26,7 +26,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!req.getParameterMap().containsKey("id")) {
-            req.setAttribute("list", MealsUtil.getFilteredWithExceeded(MealSimpleRepo.showAll(), LocalTime.of(0, 0), LocalTime.of(23, 59), 2000));
+            req.setAttribute("list", MealsUtil.getFilteredWithExceeded(MealSimpleRepo.showAll(), LocalTime.MIN, LocalTime.MAX, 2000));
             getServletContext().getRequestDispatcher("/mealList.jsp").forward(req, resp);
         } else {
             MealSimpleRepo.delete(Integer.parseInt(req.getParameter("id")));
@@ -36,6 +36,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         Meal meal = new Meal(0, Formatters.parse(req.getParameter("dob")), req.getParameter("description"), Integer.parseInt(req.getParameter("calories")));
         MealSimpleRepo.add(meal);
         resp.sendRedirect("/topjava/meals");
