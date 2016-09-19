@@ -10,7 +10,7 @@ import java.util.Set;
  * User: gkislin
  * Date: 22.08.2014
  */
-public class User extends NamedEntity {
+public class User extends NamedEntity implements Comparable {
 
     protected String email;
 
@@ -94,5 +94,40 @@ public class User extends NamedEntity {
                 ", roles=" + roles +
                 ", caloriesPerDay=" + caloriesPerDay +
                 ')';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (isEnabled() != user.isEnabled()) return false;
+        if (getCaloriesPerDay() != user.getCaloriesPerDay()) return false;
+        if (!getEmail().equals(user.getEmail())) return false;
+        if (!getPassword().equals(user.getPassword())) return false;
+        if (!getRegistered().equals(user.getRegistered())) return false;
+        return getRoles().equals(user.getRoles());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getEmail().hashCode();
+        result = 31 * result + getPassword().hashCode();
+        result = 31 * result + (isEnabled() ? 1 : 0);
+        result = 31 * result + getRegistered().hashCode();
+        result = 31 * result + getRoles().hashCode();
+        result = 31 * result + getCaloriesPerDay();
+        result = 31 * result + getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        return result;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        User u = (User) o;
+        return this.name.compareTo(u.getName());
     }
 }
