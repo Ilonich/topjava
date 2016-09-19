@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws NotFoundException {
         ExceptionUtil.checkNotFoundWithId(repository.delete(id), id);
     }
 
