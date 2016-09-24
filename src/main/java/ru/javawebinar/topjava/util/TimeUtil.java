@@ -5,7 +5,9 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * GKislin
@@ -31,5 +33,13 @@ public class TimeUtil {
 
     public static LocalTime parseLocalTime(String str) {
         return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
+    }
+
+    public static LocalDateTime fromSQLTimestamp(java.sql.Timestamp date){
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    }
+
+    public static java.sql.Timestamp fromLocalDateTime(LocalDateTime dateTime){
+        return java.sql.Timestamp.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
