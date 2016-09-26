@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.DbPopulator;
@@ -16,11 +17,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import static ru.javawebinar.topjava.UserTestData.*;
-
 @ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:springtest/spring-app-test-repo-db.xml",
+        "classpath:springtest/spring-test-db.xml"
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest {
@@ -41,7 +40,7 @@ public class UserServiceTest {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
         User created = service.save(newUser);
         newUser.setId(created.getId());
-        MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, newUser, USER), service.getAll());
+        UserTestData.MATCHER.assertCollectionEquals(Arrays.asList(UserTestData.ADMIN, newUser, UserTestData.USER), service.getAll());
     }
 
     @Test(expected = DataAccessException.class)
@@ -51,8 +50,8 @@ public class UserServiceTest {
 
     @Test
     public void testDelete() throws Exception {
-        service.delete(USER_ID);
-        MATCHER.assertCollectionEquals(Collections.singletonList(ADMIN), service.getAll());
+        service.delete(UserTestData.USER_ID);
+        UserTestData.MATCHER.assertCollectionEquals(Collections.singletonList(UserTestData.ADMIN), service.getAll());
     }
 
     @Test(expected = NotFoundException.class)
@@ -62,8 +61,8 @@ public class UserServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        User user = service.get(USER_ID);
-        MATCHER.assertEquals(USER, user);
+        User user = service.get(UserTestData.USER_ID);
+        UserTestData.MATCHER.assertEquals(UserTestData.USER, user);
     }
 
     @Test(expected = NotFoundException.class)
@@ -74,21 +73,21 @@ public class UserServiceTest {
     @Test
     public void testGetByEmail() throws Exception {
         User user = service.getByEmail("user@yandex.ru");
-        MATCHER.assertEquals(USER, user);
+        UserTestData.MATCHER.assertEquals(UserTestData.USER, user);
     }
 
     @Test
     public void testGetAll() throws Exception {
         Collection<User> all = service.getAll();
-        MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, USER), all);
+        UserTestData.MATCHER.assertCollectionEquals(Arrays.asList(UserTestData.ADMIN, UserTestData.USER), all);
     }
 
     @Test
     public void testUpdate() throws Exception {
-        User updated = new User(USER);
+        User updated = new User(UserTestData.USER);
         updated.setName("UpdatedName");
         updated.setCaloriesPerDay(330);
         service.update(updated);
-        MATCHER.assertEquals(updated, service.get(USER_ID));
+        UserTestData.MATCHER.assertEquals(updated, service.get(UserTestData.USER_ID));
     }
 }

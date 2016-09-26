@@ -15,14 +15,11 @@ import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.util.Collection;
 
-import static ru.javawebinar.topjava.UserTestData.ADMIN;
-import static ru.javawebinar.topjava.UserTestData.USER;
-
 /**
  * GKislin
  * 13.03.2015.
  */
-@ContextConfiguration("classpath:resources/springtest/spring-app.xml")
+@ContextConfiguration("classpath:springtest/spring-app-test-repo-mock.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class InMemoryAdminRestControllerSpringTest {
 
@@ -35,8 +32,8 @@ public class InMemoryAdminRestControllerSpringTest {
     @Before
     public void setUp() throws Exception {
         repository.getAll().forEach(u -> repository.delete(u.getId()));
-        repository.save(USER);
-        repository.save(ADMIN);
+        repository.save(UserTestData.USER);
+        repository.save(UserTestData.ADMIN);
     }
 
     @Test
@@ -44,7 +41,7 @@ public class InMemoryAdminRestControllerSpringTest {
         controller.delete(UserTestData.USER_ID);
         Collection<User> users = controller.getAll();
         Assert.assertEquals(users.size(), 1);
-        Assert.assertEquals(users.iterator().next(), ADMIN);
+        Assert.assertEquals(users.iterator().next(), UserTestData.ADMIN);
     }
 
     @Test(expected = NotFoundException.class)

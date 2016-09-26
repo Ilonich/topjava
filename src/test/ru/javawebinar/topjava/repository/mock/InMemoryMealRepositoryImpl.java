@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.repository.mock;
 
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -12,9 +13,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 /**
  * GKislin
@@ -30,10 +28,10 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.MEALS.forEach(um -> save(um, USER_ID));
+        MealsUtil.MEALS.forEach(um -> save(um, UserTestData.USER_ID));
 
-        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510), ADMIN_ID);
-        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 1500), ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510), UserTestData.ADMIN_ID);
+        save(new Meal(LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 1500), UserTestData.ADMIN_ID);
     }
 
     @Override

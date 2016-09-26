@@ -4,10 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
+    <context:property-placeholder location="classpath:dbtest/postgres.properties" system-properties-mode="OVERRIDE"/>
 
     <bean class="ru.javawebinar.topjava.util.DbPopulator">
-        <constructor-arg name="scriptLocation" value="classpath:db/populateDB.sql"/>
+        <constructor-arg name="scriptLocation" value="classpath:dbtest/populateDB.sql"/>
     </bean>
 
     <!--no pooling-->

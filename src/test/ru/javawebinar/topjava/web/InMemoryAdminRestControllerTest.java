@@ -12,16 +12,13 @@ import ru.javawebinar.topjava.web.user.AdminRestController;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static ru.javawebinar.topjava.UserTestData.ADMIN;
-import static ru.javawebinar.topjava.UserTestData.USER;
-
 public class InMemoryAdminRestControllerTest {
     private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
 
     @BeforeClass
     public static void beforeClass() {
-        appCtx = new ClassPathXmlApplicationContext("resources/springtest/spring-app.xml");
+        appCtx = new ClassPathXmlApplicationContext("springtest/spring-app-test-repo-mock.xml");
         System.out.println("\n" + Arrays.toString(appCtx.getBeanDefinitionNames()) + "\n");
         controller = appCtx.getBean(AdminRestController.class);
     }
@@ -36,8 +33,8 @@ public class InMemoryAdminRestControllerTest {
         // Re-initialize
         UserRepository repository = appCtx.getBean(UserRepository.class);
         repository.getAll().forEach(u -> repository.delete(u.getId()));
-        repository.save(USER);
-        repository.save(ADMIN);
+        repository.save(UserTestData.USER);
+        repository.save(UserTestData.ADMIN);
     }
 
     @Test
@@ -45,7 +42,7 @@ public class InMemoryAdminRestControllerTest {
         controller.delete(UserTestData.USER_ID);
         Collection<User> users = controller.getAll();
         Assert.assertEquals(users.size(), 1);
-        Assert.assertEquals(users.iterator().next(), ADMIN);
+        Assert.assertEquals(users.iterator().next(), UserTestData.ADMIN);
     }
 
     @Test(expected = NotFoundException.class)
