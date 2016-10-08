@@ -34,8 +34,8 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.HSQLDB)
-public class MealServiceTest {
+//@ActiveProfiles({Profiles.HSQLDB, Profiles.JDBC})
+public abstract class MealServiceTest {
     private static final Logger LOG = LoggerFactory.getLogger(MealServiceTest.class);
 
     @Rule
