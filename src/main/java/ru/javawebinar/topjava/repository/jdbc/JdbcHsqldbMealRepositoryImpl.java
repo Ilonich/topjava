@@ -102,4 +102,9 @@ public class JdbcHsqldbMealRepositoryImpl implements MealRepository {
                 .addValue("endDate", TimeUtil.fromLocalDateTime(endDate));
         return namedParameterJdbcTemplate.query("SELECT * FROM meals WHERE user_id=:userId AND date_time BETWEEN :startDate AND :endDate ORDER BY date_time DESC", map, MEAL_ROW_MAPPER);
     }
+
+    @Override
+    public Meal getWithUser(int id) {
+        throw new UnsupportedOperationException();
+    }
 }
