@@ -58,7 +58,7 @@ public class User extends NamedEntity {
     private int caloriesPerDay = MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", updatable = false, insertable = false)
     @OrderBy("dateTime desc")
     private List<Meal> meals;
 
