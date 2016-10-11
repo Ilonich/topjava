@@ -25,9 +25,8 @@ import java.util.List;
  * Date: 26.08.2014
  */
 
-@Profile("hsqldb")
 @Repository
-public class JdbcHsqldbMealRepositoryImpl implements MealRepository {
+public class JdbcMealRepositoryImpl implements MealRepository {
 
     private static final RowMapper MEAL_ROW_MAPPER = new RowMapper() {
         @Override
@@ -53,7 +52,7 @@ public class JdbcHsqldbMealRepositoryImpl implements MealRepository {
     private SimpleJdbcInsert insertMeal;
 
     @Autowired
-    public JdbcHsqldbMealRepositoryImpl(DataSource dataSource) {
+    public JdbcMealRepositoryImpl(DataSource dataSource) {
         this.insertMeal = new SimpleJdbcInsert(dataSource)
                 .withTableName("MEALS")
                 .usingGeneratedKeyColumns("id");

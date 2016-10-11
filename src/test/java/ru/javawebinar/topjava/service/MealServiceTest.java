@@ -32,33 +32,10 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-//@ActiveProfiles({Profiles.HSQLDB, Profiles.JDBC})
-public abstract class MealServiceTest {
-    protected static final Logger LOG = LoggerFactory.getLogger(MealServiceTest.class);
+public abstract class MealServiceTest extends AbstractPrintTotalResultsTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
-    protected static StringBuffer results = new StringBuffer();
-
-    @AfterClass
-    public static void printResult() {
-        System.out.printf("%nTest             Duration, ms%n");
-        System.out.println("-----------------------------");
-        System.out.println(results);
-        System.out.printf("-----------------------------%n%n");
-    }
-
-    @Rule
-    // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
-    public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void finished(long nanos, Description description) {
-            String result = String.format("%-20s %8d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
-            results.append(result).append('\n');
-            LOG.info(result + " ms\n");
-        }
-    };
 
     @Autowired
     protected MealService service;
