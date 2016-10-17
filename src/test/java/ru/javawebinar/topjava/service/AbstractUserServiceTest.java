@@ -19,6 +19,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -29,7 +30,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(Profiles.HSQLDB)
-public class AbstractUserServiceTest {
+public abstract class AbstractUserServiceTest {
 
     @Autowired
     protected UserService service;
@@ -47,7 +48,7 @@ public class AbstractUserServiceTest {
         
     @Test
     public void testSave() throws Exception {
-        User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));
+        User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, EnumSet.of(Role.ROLE_ADMIN, Role.ROLE_USER));
         User created = service.save(newUser);
         newUser.setId(created.getId());
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, newUser, USER), service.getAll());

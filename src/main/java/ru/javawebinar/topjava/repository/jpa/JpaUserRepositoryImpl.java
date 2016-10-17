@@ -6,9 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.persistence.Entity;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: gkislin
@@ -43,7 +47,9 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-        return em.find(User.class, id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("javax.persistence.fetchgraph", getEntityGraph());
+        return em.find(User.class, id, map);
     }
 
     @Override
@@ -61,12 +67,20 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email).getResultList();
+        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email)
+                .setHint("javax.persistence.fetchgraph", getEntityGraph())
+                .getResultList();
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
+        return em.createNamedQuery(User.ALL_SORTED, User.class)
+                .setHint("javax.persistence.fetchgraph", getEntityGraph())
+                .getResultList();
+    }
+
+    private Object getEntityGraph(){
+        return em.getEntityGraph("graph.User.roles");
     }
 }
