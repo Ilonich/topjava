@@ -24,6 +24,10 @@ import java.time.LocalTime;
 //                "m.description=:desc where m.id=:id and m.user.id=:userId")
 })
 @Entity
+@NamedEntityGraph(name = "graph.Meal.user",
+        attributeNodes = @NamedAttributeNode("user"),
+        subgraphs = @NamedSubgraph(name = "user",
+                attributeNodes = @NamedAttributeNode("roles")))
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
 public class Meal extends BaseEntity {
     public static final String GET = "Meal.get";

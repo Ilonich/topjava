@@ -30,13 +30,14 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     User findOne(Integer id);
 
     @Override
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email")
+    @EntityGraph(value = "graph.User.roles", type = EntityGraph.EntityGraphType.FETCH)
+    @Query("SELECT DISTINCT u FROM User u ORDER BY u.name, u.email")
     List<User> findAll();
 
     @EntityGraph(value = "graph.User.roles", type = EntityGraph.EntityGraphType.FETCH)
     User getByEmail(String email);
 
     @EntityGraph(value = "graph.User.roles", type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.meals WHERE u.id = ?1")
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.meals WHERE u.id = ?1")
     User getWithMeals(int id);
 }

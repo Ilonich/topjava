@@ -21,7 +21,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u WHERE u.email=?1"),
-        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT DISTINCT u FROM User u ORDER BY u.name, u.email"),
 })
 @NamedEntityGraph(name = "graph.User.roles", attributeNodes = @NamedAttributeNode("roles"))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -81,7 +81,17 @@ public class User extends NamedEntity {
         this.password = password;
         this.caloriesPerDay = caloriesPerDay;
         this.enabled = enabled;
-        this.roles = roles;
+        this.roles = EnumSet.copyOf(roles);
+    }
+
+    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Date registered, Set<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.caloriesPerDay = caloriesPerDay;
+        this.enabled = enabled;
+        this.roles = EnumSet.copyOf(roles);
+        this.registered = registered;
     }
 
     public String getEmail() {
@@ -121,7 +131,7 @@ public class User extends NamedEntity {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return EnumSet.copyOf(roles);
     }
 
     public String getPassword() {
@@ -130,6 +140,14 @@ public class User extends NamedEntity {
 
     public List<Meal> getMeals() {
         return meals;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = EnumSet.copyOf(roles);
+    }
+
+    public void addRole(Role role){
+        roles.add(role);
     }
 
     @Override
