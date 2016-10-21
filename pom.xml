@@ -69,6 +69,7 @@
                 <configuration>
                     <container>
                         <containerId>tomcat8x</containerId>
+                        <home>D:/Serious/Projects tools/apache-tomcat-8.5.5</home>
                         <systemProperties>
                             <file.encoding>UTF-8</file.encoding>
                             <spring.profiles.active>tomcat,datajpa</spring.profiles.active>

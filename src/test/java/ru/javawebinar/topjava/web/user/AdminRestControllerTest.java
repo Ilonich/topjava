@@ -35,6 +35,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     public void testGetByEmail() throws Exception {
         mockMvc.perform(get(REST_URL + "by?email=" + USER.getEmail()))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MATCHER.contentMatcher(USER));
@@ -56,6 +57,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
                 .andExpect(status().isOk());
 
         MATCHER.assertEquals(updated, userService.get(USER_ID));
@@ -79,6 +81,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     public void testGetAll() throws Exception {
         TestUtil.print(mockMvc.perform(get(REST_URL))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MATCHER.contentListMatcher(ADMIN, USER)));
     }

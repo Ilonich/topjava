@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.user;
+package ru.javawebinar.topjava.web;
 
 import org.junit.Test;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
@@ -15,6 +15,26 @@ import static ru.javawebinar.topjava.model.BaseEntity.START_SEQ;
  * 10.04.2015.
  */
 public class RootControllerTest extends AbstractControllerTest {
+    @Test
+    public void testMeals() throws Exception {
+        mockMvc.perform(get("/meals"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("meals"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"))
+                .andExpect(model().attribute("meals", hasSize(6)))
+                .andExpect(model().attribute("meals", hasItem(allOf(
+                        hasProperty("exceed", anything())
+                ))));
+    }
+
+    @Test
+    public void testStyleCss() throws Exception{
+        mockMvc.perform(get("/resources/css/style.css"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/css"));
+    }
 
     @Test
     public void testUsers() throws Exception {
