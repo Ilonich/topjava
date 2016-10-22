@@ -86,13 +86,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
     public void testGetBetween() throws Exception {
         mockMvc.perform(post(REST_URL + "/filter")
                 .param("startDate", "2015-05-30")
-                .param("endDate", "2015-05-30")
+                .param("endDate", "")
                 .param("startTime", "12:30")
                 .param("endTime", "21:30"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER_EXCEEDED.contentListMatcher(MealsUtil.getWithExceeded(Arrays.asList(MEAL3, MEAL2), 1500)));
+                .andExpect(MATCHER_EXCEEDED.contentListMatcher(MealsUtil.getWithExceeded(Arrays.asList(MEAL6, MEAL5, MEAL3, MEAL2), 1500)));
     }
 
 }
