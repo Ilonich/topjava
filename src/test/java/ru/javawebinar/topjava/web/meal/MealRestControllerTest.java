@@ -60,7 +60,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         Meal created = getCreated();
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(created)));
+                .content(JsonUtil.writeValue(created)))
+                .andDo(print());
 
         Meal returned = MATCHER.fromJsonAction(action);
         created.setId(returned.getId());

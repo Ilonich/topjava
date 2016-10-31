@@ -31,11 +31,11 @@ function deleteRow(id) {
 
 function updateTable() {
     $.get(ajaxUrl, function (data) {
-        datatableApi.fnClearTable();
+        datatableApi.clear();
         $.each(data, function (key, item) {
-            datatableApi.fnAddData(item);
+            datatableApi.row.add(item);
         });
-        datatableApi.fnDraw();
+        datatableApi.draw();
     });
 }
 
