@@ -73,8 +73,28 @@
         сумма
         калорий за день норму (редактируемый параметр в профиле пользователя).
         Весь REST интерфейс покрывается JUnit тестами, используя Spring MVC Test и Spring Security Test.
+        <button type="button" onclick="test()">TEST</button>
     </div>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+    function test() {
+        $.ajax({
+            type: "GET",
+            url: "ajax/profile/meals",
+            success: function (data, textStatus, jqXHR) {
+                alert("REDIRECTED");
+                console.log(textStatus)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              alert("ERROR");
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        });
+    }
+</script>
 </html>

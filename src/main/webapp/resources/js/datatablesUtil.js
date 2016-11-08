@@ -14,7 +14,7 @@ function add(add_title) {
 }
 
 function updateRow(id) {
-    $('#modalTitle').html(edit_title);
+    $('#modalTitle').html(i18n['users.edit']);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
