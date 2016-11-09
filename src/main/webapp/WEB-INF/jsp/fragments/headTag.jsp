@@ -15,6 +15,7 @@
         var i18n = [];
         <c:forEach var='key' items='<%=new String[]{"meals.edit", "users.edit", "common.update","common.delete","common.deleted","common.saved","common.enabled","common.disabled","common.failed", "common.search"}%>'>
         i18n['${key}'] = '<fmt:message key="${key}"/>';
+        var localeCode="${pageContext.response.locale}";
         </c:forEach>
     </script>
 </head>

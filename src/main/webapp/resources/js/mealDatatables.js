@@ -11,7 +11,7 @@ $(document).ready(function(){
                         callback({data: tableData});
                     });
                 } else {
-                    $.get(ajaxUrl.concat('filter'), {
+                    $.post(ajaxUrl.concat('filter'), {
                         startDate: $('#startDate').val(),
                         endDate: $('#endDate').val(),
                         startTime: $('#startTime').val(),
@@ -53,10 +53,24 @@ $(document).ready(function(){
         },
         dom: '<"pull-right"f>lipt',
         drawCallback: function (settings) {
-        makeEditable();
-    }
+            makeEditable();
+        }
 });
     $('#meals-table_filter').find('input').addClass("form-control");
+    $('#startDate, #endDate').datetimepicker({
+        format:'Y-m-d',
+        timepicker:false
+    });
+    $('#startTime, #endTime').datetimepicker({
+        datepicker:false,
+        format:'H:i'
+    });
+
+    $('#dateTime').datetimepicker({
+        format:'Y-m-d H:i'
+    });
+    $.datetimepicker.setLocale(localeCode);
+
 });
 
 function newMeal() {
@@ -89,6 +103,10 @@ function makeEditable() {
 
     $('.meal-delete').on('click', function () {
         deleteMealRow($(this).closest('tr').attr("meal-id"));
+    });
+
+    $(document).ajaxError(function (event, jqXHR, options, jsExc) {
+        failNoty(event, jqXHR, options, jsExc);
     });
 }
 
