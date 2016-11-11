@@ -49,7 +49,7 @@ public class AbstractUserServiceTest {
 
     @Test(expected = DataAccessException.class)
     public void testDuplicateMailSave() throws Exception {
-        service.save(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.ROLE_USER));
+        service.save(new User(null, "Duplicate", "user@yandex.ru", "newPass", 2000, Role.ROLE_USER));
     }
 
     @Test
