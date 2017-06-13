@@ -1,26 +1,25 @@
-var ajaxUrl = 'ajax/profile/meals/';
+var ajaxUrl = "ajax/profile/meals/";
 var datatableApi;
 
 function updateTable() {
     $.ajax({
         type: "POST",
-        url: ajaxUrl + 'filter',
-        data: $('#filter').serialize(),
+        url: ajaxUrl + "filter",
+        data: $("#filter").serialize(),
         success: updateTableByData
     });
+}
+
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get(ajaxUrl, updateTableByData);
 }
 
 $(function () {
     datatableApi = $('#datatable').DataTable(extendsOpts({
         "columns": [
             {
-                "data": "dateTime",
-                "render": function (date, type, row) {
-                    if (type == 'display') {
-                        return date.replace('T', ' ').substr(0, 16);
-                    }
-                    return date;
-                }
+                "data": "dateTimeUI"
             },
             {
                 "data": "description"
@@ -29,15 +28,14 @@ $(function () {
                 "data": "calories"
             },
             {
+                "render": renderEditBtn,
                 "defaultContent": "",
-                "orderable": false,
-                "render": renderEditBtn
+                "orderable": false
             },
             {
+                "render": renderDeleteBtn,
                 "defaultContent": "",
-                "orderable": false,
-                "render": renderDeleteBtn
-
+                "orderable": false
             }
         ],
         "order": [
@@ -48,12 +46,12 @@ $(function () {
         ],
         "createdRow": function (row, data, dataIndex) {
             $(row).addClass(data.exceed ? 'exceeded' : 'normal');
-        },
-        "initComplete": makeEditable
+        }
     }));
 
     $.datetimepicker.setLocale(localeCode);
 
+//  http://xdsoft.net/jqplugins/datetimepicker/
     var startDate = $('#startDate');
     var endDate = $('#endDate');
     startDate.datetimepicker({

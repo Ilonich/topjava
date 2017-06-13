@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.jpa;
 
+import org.hibernate.jpa.QueryHints;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-/**
- * User: gkislin
- * Date: 29.08.2014
- */
 @Repository
 @Transactional(readOnly = true)
 public class JpaUserRepositoryImpl implements UserRepository {
@@ -53,7 +50,7 @@ public class JpaUserRepositoryImpl implements UserRepository {
 /*      User ref = em.getReference(User.class, id);
         em.remove(ref);
 
-        Query<User> query = em.createQuery("DELETE FROM User u WHERE u.id=:id");
+        Query query = em.createQuery("DELETE FROM User u WHERE u.id=:id");
         return query.setParameter("id", id).executeUpdate() != 0;
 */
         return em.createNamedQuery(User.DELETE).setParameter("id", id).executeUpdate() != 0;
@@ -61,7 +58,10 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email).getResultList();
+        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class)
+                .setParameter(1, email)
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                .getResultList();
         return DataAccessUtils.singleResult(users);
     }
 

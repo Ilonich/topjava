@@ -2,8 +2,8 @@ package ru.javawebinar.topjava;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.javawebinar.topjava.matcher.ModelMatcher;
 import ru.javawebinar.topjava.model.Role;
+import ru.javawebinar.topjava.matcher.ModelMatcher;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.PasswordUtil;
 
@@ -11,10 +11,6 @@ import java.util.Objects;
 
 import static ru.javawebinar.topjava.model.BaseEntity.START_SEQ;
 
-/**
- * GKislin
- * 24.09.2015.
- */
 public class UserTestData {
     private static final Logger LOG = LoggerFactory.getLogger(UserTestData.class);
 
@@ -45,5 +41,4 @@ public class UserTestData {
         }
         return true;
     }
-
 }

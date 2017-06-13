@@ -6,11 +6,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.regex.Pattern;
 
-/**
- * GKislin
- * 05.01.2015.
- */
-
 public class PasswordUtil {
     private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
@@ -20,7 +15,7 @@ public class PasswordUtil {
     }
 
     public static String encode(String newPassword) {
-        if (StringUtils.isEmpty(newPassword)) {
+        if (!StringUtils.hasText(newPassword)) {
             return null;
         }
         if (isEncoded(newPassword)) {

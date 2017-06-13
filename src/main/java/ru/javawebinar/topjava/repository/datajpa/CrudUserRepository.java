@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,10 +11,6 @@ import ru.javawebinar.topjava.model.User;
 
 import java.util.List;
 
-/**
- * gkislin
- * 02.10.2016
- */
 @Transactional(readOnly = true)
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Transactional
@@ -29,13 +26,14 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     User findOne(Integer id);
 
     @Override
-    @Query("SELECT u FROM User u ORDER BY u.name, u.email")
-    List<User> findAll();
+    List<User> findAll(Sort sort);
 
-    @Query("SELECT u FROM User u WHERE u.email=?1")
     User getByEmail(String email);
 
-    @EntityGraph(value = User.GRAPH_WITH_MEALS)
+//    @Query("SELECT u FROM User u LEFT JOIN FETCH u.meals WHERE u.id = ?1")
+//    @EntityGraph(value = User.GRAPH_WITH_MEALS)
+
+    @EntityGraph(attributePaths={"meals", "roles"})
     @Query("SELECT u FROM User u WHERE u.id=?1")
     User getWithMeals(int id);
 }

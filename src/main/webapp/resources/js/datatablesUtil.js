@@ -3,8 +3,10 @@ var form;
 function makeEditable() {
     form = $('#detailsForm');
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
-        failNoty(event, jqXHR, options, jsExc);
+        failNoty(jqXHR);
     });
+    // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
+    $.ajaxSetup({ cache: false });
 
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -25,25 +27,24 @@ function extendsOpts(opts) {
             "info": true,
             "language": {
                 "search": i18n["common.search"]
-            }
+            },
+            "initComplete": makeEditable
         }
     );
     return opts;
 }
 
-function add(add_title) {
-    $('#modalTitle').html(add_title);
+function add() {
+    $('#modalTitle').html(i18n["addTitle"]);
     form.find(":input").val("");
     $('#editRow').modal();
 }
 
 function updateRow(id) {
-    $('#modalTitle').html(edit_title);
+    $('#modalTitle').html(i18n["editTitle"]);
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(
-                key === "dateTime" ? value.replace('T', ' ').substr(0, 16) : value
-            );
+            form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();
     });
@@ -56,19 +57,6 @@ function deleteRow(id) {
         success: function () {
             updateTable();
             successNoty('common.deleted');
-        }
-    });
-}
-
-function enable(chkbox, id) {
-    var enabled = chkbox.is(":checked");
-    $.ajax({
-        url: ajaxUrl + id,
-        type: 'POST',
-        data: 'enabled=' + enabled,
-        success: function () {
-            chkbox.closest('tr').fadeTo(300, enabled ? 1 : 0.3);
-            successNoty(enabled ? 'common.enabled' : 'common.disabled');
         }
     });
 }
@@ -105,28 +93,30 @@ function successNoty(key) {
         text: i18n[key],
         type: 'success',
         layout: 'bottomRight',
-        timeout: true
+        timeout: 1500
     });
 }
 
-function failNoty(event, jqXHR, options, jsExc) {
+function failNoty(jqXHR) {
     closeNoty();
     var errorInfo = $.parseJSON(jqXHR.responseText);
     failedNote = noty({
-        text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>"+ errorInfo.cause + "<br>" + errorInfo.details.join("<br>"),
+        text: i18n['common.errorStatus'] + ': ' + jqXHR.status + '<br>'+ errorInfo.cause + '<br>' + errorInfo.details.join("<br>"),
         type: 'error',
         layout: 'bottomRight'
     });
 }
 
 function renderEditBtn(data, type, row) {
-    if (type == 'display') {
-        return '<a class="btn btn-xs btn-primary" onclick="updateRow(' + row.id + ');">'+i18n['common.update']+'</a>';
+    if (type === 'display') {
+        return '<a onclick="updateRow(' + row.id + ');">' +
+            '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
     }
 }
 
 function renderDeleteBtn(data, type, row) {
-    if (type == 'display') {
-        return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">'+i18n['common.delete']+'</a>';
+    if (type === 'display') {
+        return '<a onclick="deleteRow(' + row.id + ');">'+
+            '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>';
     }
 }

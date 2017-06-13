@@ -15,40 +15,39 @@ import java.util.stream.Collectors;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 /**
- * GKislin
- * 06.01.2015.
+ * This test Matcher assert equality of beans and collections
  * <p>
- * This class wrap every entity by Wrapper before assertEquals in order to compare them by comparator
- * Default comparator compare by String.valueOf(entity)
+ * It wraps every entity by Wrapper before apply to Assert.assertEquals
+ * and every element of collection before call Collection equals
+ * in order to compare them by custom Equality.
+ * <p>
+ * Default equality is String.valueOf(entity)
+ *
+ * Assert json response body with expected result, converting it via {@link JsonUtil}
+ * into object(collection) and wrap results by Wrapper.
  *
  * @param <T> : Entity
  */
 public class ModelMatcher<T> {
-    private static final Comparator DEFAULT_COMPARATOR =
-            (Object expected, Object actual) -> expected == actual || String.valueOf(expected).equals(String.valueOf(actual));
 
-    private Comparator<T> comparator;
+    private Equality<T> equality;
     private Class<T> entityClass;
 
-    public interface Comparator<T> {
-        boolean compare(T expected, T actual);
+    public interface Equality<T> {
+        boolean areEqual(T expected, T actual);
+    }
+
+    private ModelMatcher(Class<T> entityClass, Equality<T> equality) {
+        this.entityClass = entityClass;
+        this.equality = equality;
     }
 
     public static <T> ModelMatcher<T> of(Class<T> entityClass) {
-        return new ModelMatcher<>(entityClass);
+        return of(entityClass, (T expected, T actual) -> expected == actual || String.valueOf(expected).equals(String.valueOf(actual)));
     }
 
-    public static <T> ModelMatcher<T> of(Class<T> entityClass, Comparator<T> comparator) {
-        return new ModelMatcher<>(entityClass, comparator);
-    }
-
-    public ModelMatcher(Class<T> entityClass) {
-        this(entityClass, (Comparator<T>) DEFAULT_COMPARATOR);
-    }
-
-    public ModelMatcher(Class<T> entityClass, Comparator<T> comparator) {
-        this.entityClass = entityClass;
-        this.comparator = comparator;
+    public static <T> ModelMatcher<T> of(Class<T> entityClass, Equality<T> equality) {
+        return new ModelMatcher<>(entityClass, equality);
     }
 
     private class Wrapper {
@@ -63,7 +62,7 @@ public class ModelMatcher<T> {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Wrapper that = (Wrapper) o;
-            return entity != null ? comparator.compare(entity, that.entity) : that.entity == null;
+            return entity != null ? equality.areEqual(entity, that.entity) : that.entity == null;
         }
 
         @Override
@@ -92,11 +91,11 @@ public class ModelMatcher<T> {
         Assert.assertEquals(wrap(expected), wrap(actual));
     }
 
-    public Wrapper wrap(T entity) {
+    private Wrapper wrap(T entity) {
         return new Wrapper(entity);
     }
 
-    public List<Wrapper> wrap(Collection<T> collection) {
+    private List<Wrapper> wrap(Collection<T> collection) {
         return collection.stream().map(this::wrap).collect(Collectors.toList());
     }
 
@@ -112,6 +111,7 @@ public class ModelMatcher<T> {
                 });
     }
 
+    @SafeVarargs
     public final ResultMatcher contentListMatcher(T... expected) {
         return contentListMatcher(Arrays.asList(expected));
     }

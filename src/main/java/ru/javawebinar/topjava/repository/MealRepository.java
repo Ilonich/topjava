@@ -3,7 +3,7 @@ package ru.javawebinar.topjava.repository;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * GKislin
@@ -20,10 +20,10 @@ public interface MealRepository {
     Meal get(int id, int userId);
 
     // ORDERED dateTime
-    Collection<Meal> getAll(int userId);
+    List<Meal> getAll(int userId);
 
     // ORDERED dateTime
-    Collection<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+    List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
 
     default Meal getWithUser(int id, int userId) {
         throw new UnsupportedOperationException();

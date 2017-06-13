@@ -2,16 +2,13 @@ package ru.javawebinar.topjava.web.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.IOException;
 import java.util.List;
 
 import static ru.javawebinar.topjava.web.json.JacksonObjectMapper.getMapper;
 
-/**
- * User: gkislin
- * Date: 30.04.2014
- */
 public class JsonUtil {
 
     public static <T> List<T> readValues(String json, Class<T> clazz) {
@@ -34,6 +31,14 @@ public class JsonUtil {
     public static <T> String writeValue(T obj) {
         try {
             return getMapper().writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
+        }
+    }
+
+    public static <T> String writeValue(T obj, ObjectWriter ow) {
+        try {
+            return ow.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
         }

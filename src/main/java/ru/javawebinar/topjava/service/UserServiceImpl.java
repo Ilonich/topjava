@@ -12,23 +12,24 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.UserUtil.prepareToSave;
 import static ru.javawebinar.topjava.util.UserUtil.updateFromTo;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
-/**
- * GKislin
- * 06.03.2015.
- */
 @Service("userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private final UserRepository repository;
+
     @Autowired
-    private UserRepository repository;
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
@@ -39,19 +40,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
-    public void delete(int id) {
-        ExceptionUtil.checkNotFoundWithId(repository.delete(id), id);
+    public void delete(int id) throws NotFoundException {
+        checkNotFoundWithId(repository.delete(id), id);
     }
 
     @Override
     public User get(int id) throws NotFoundException {
-        return ExceptionUtil.checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     @Override
     public User getByEmail(String email) throws NotFoundException {
         Assert.notNull(email, "email must not be null");
-        return ExceptionUtil.checkNotFound(repository.getByEmail(email), "email=" + email);
+        return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
     @Cacheable("users")
@@ -75,10 +76,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         repository.save(prepareToSave(user));
     }
 
-
     @CacheEvict(value = "users", allEntries = true)
     @Override
     public void evictCache() {
+        // only for evict cache
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -101,6 +102,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User getWithMeals(int id) {
-        return ExceptionUtil.checkNotFoundWithId(repository.getWithMeals(id), id);
+        return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
 }

@@ -89,10 +89,10 @@
                     </con:settings>
                     <con:endpoint>http://localhost:8080</con:endpoint>
                     <con:request>{
-  "name": "New2",
-   "email": "new2@yandex.ru",
-   "password": "passwordNew",
-  "roles": ["ROLE_USER"]
+                        "name": "New2",
+                        "email": "new2@yandex.ru",
+                        "password": "passwordNew",
+                        "roles": ["ROLE_USER"]
                         }
                     </con:request>
                     <con:originalUri>http://localhost/topjava/rest/admin/users</con:originalUri>
@@ -193,10 +193,10 @@
                     </con:settings>
                     <con:endpoint>http://localhost:8080</con:endpoint>
                     <con:request>{
-  "name": "UserUpdated",
-   "email": "user@yandex.ru",
-   "password": "passwordNew",
-  "roles": ["ROLE_USER"]
+                        "name": "UserUpdated",
+                        "email": "user@yandex.ru",
+                        "password": "passwordNew",
+                        "roles": ["ROLE_USER"]
                         }
                     </con:request>
                     <con:originalUri>http://localhost/topjava/rest/admin/users/100000</con:originalUri>
@@ -315,10 +315,10 @@
                     </con:settings>
                     <con:endpoint>http://localhost:8080</con:endpoint>
                     <con:request>{
-  "name": "New777",
-   "email": "new777@yandex.ru",
-   "password": "passwordNew",
-  "roles": ["ROLE_USER"]
+                        "name": "New777",
+                        "email": "new777@yandex.ru",
+                        "password": "passwordNew",
+                        "roles": ["ROLE_USER"]
                         }
                     </con:request>
                     <con:originalUri>http://localhost/topjava/rest/profile</con:originalUri>
@@ -594,7 +594,7 @@
                     <con:default/>
                     <con:description xsi:nil="true"/>
                 </con:parameter>
-            <con:parameter><con:name>endTime</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters>
+                <con:parameter><con:name>endTime</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters>
             <con:method name="mealsGetFilter" id="cb151971-7d79-49fa-a743-d313fe138986" method="GET">
                 <con:settings/>
                 <con:parameters/>
@@ -617,10 +617,10 @@
                     <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
                     <con:jmsPropertyConfig/>
                     <con:parameters>
-  <con:entry key="startDate" value="2015-05-31"/>
-  <con:entry key="endTime" value="11:00"/>
-  <con:entry key="2015-05-31" value="2015-05-31"/>
-</con:parameters>
+                        <con:entry key="startDate" value="2015-05-31"/>
+                        <con:entry key="endTime" value="11:00"/>
+                        <con:entry key="2015-05-31" value="2015-05-31"/>
+                    </con:parameters>
                     <con:parameterOrder><con:entry>startDate</con:entry><con:entry>endTime</con:entry></con:parameterOrder>
                 </con:request>
             </con:method>

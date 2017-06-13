@@ -1,40 +1,38 @@
 package ru.javawebinar.topjava.model;
 
 import org.hibernate.Hibernate;
-import org.springframework.data.domain.Persistable;
+import ru.javawebinar.topjava.HasId;
 
 import javax.persistence.*;
 
 /**
- * User: gkislin
- * Date: 22.08.2014
- * <p>
  * Do not manipulate new (transient) entries in HashSet/HashMap without overriding hashCode
- * http://stackoverflow.com/a/39827962/548473
- *
- * @see org.springframework.data.jpa.domain.AbstractPersistable
+ * http://stackoverflow.com/questions/5031614
  */
 @MappedSuperclass
+
 // http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
 //@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
-public class BaseEntity implements Persistable<Integer> {
+public class BaseEntity implements HasId {
     public static final int START_SEQ = 100000;
 
     @Id
-    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1)
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
+    //    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('global_seq')")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     // PROPERTY access for id due to bug: https://hibernate.atlassian.net/browse/HHH-3718
     @Access(value = AccessType.PROPERTY)
-    protected Integer id;
+    private Integer id;
 
-    public BaseEntity() {
+    protected BaseEntity() {
     }
 
     protected BaseEntity(Integer id) {
         this.id = id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
@@ -42,11 +40,6 @@ public class BaseEntity implements Persistable<Integer> {
     @Override
     public Integer getId() {
         return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return (getId() == null);
     }
 
     @Override
@@ -58,12 +51,16 @@ public class BaseEntity implements Persistable<Integer> {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
-
-        return null != getId() && getId().equals(that.getId());
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
         return (getId() == null) ? 0 : getId();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Entity %s (%s)", getClass().getName(), getId());
     }
 }

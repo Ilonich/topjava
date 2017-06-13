@@ -8,15 +8,17 @@
 
 <spring:bind path="${name}">
     <div class="form-group ${status.error ? 'error' : '' }">
-        <label class="control-label col-xs-2">${label}</label>
+        <label class="control-label col-sm-2">${label}</label>
 
-        <div class="col-xs-8">
+        <div class="col-sm-3">
             <c:choose>
-                <c:when test="${inputType == 'password'}"><form:password path="${name}"/></c:when>
-                <c:when test="${inputType == 'number'}"><form:input path="${name}" type="number"/></c:when>
-                <c:otherwise><form:input path="${name}"/></c:otherwise>
+                <c:when test="${inputType == 'password'}"><form:password path="${name}" class="form-control"/></c:when>
+                <c:when test="${inputType == 'number'}"><form:input path="${name}" type="number" class="form-control"/></c:when>
+                <c:otherwise><form:input path="${name}" class="form-control"/></c:otherwise>
             </c:choose>
-            &nbsp;<span class="help-inline">${status.errorMessage}</span>
+        </div>
+        <div class="col-sm-7">
+            <span class="help-inline">${status.errorMessage}</span>
         </div>
     </div>
 </spring:bind>

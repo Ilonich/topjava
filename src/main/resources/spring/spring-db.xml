@@ -78,7 +78,7 @@
               p:username="#{ @dbUrl.getUserInfo().split(':')[0] }"
               p:password="#{ @dbUrl.getUserInfo().split(':')[1] }"
               p:driverClassName="org.postgresql.Driver"
-              p:validationQuery="SELECT 1 FROM users"
+              p:validationQuery="SELECT 1"
               p:maxActive="10"
               p:minIdle="2"
               p:maxWait="20000"
@@ -107,11 +107,11 @@
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="true"/>
                     <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_QUERY_CACHE}" value="false"/> <!--default-->
                     <entry key="#{T(org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory).NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME}" value="cache/ehcache.xml"/>
-
 <!--
-                    <entry key="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-                    <entry key="javax.persistence.schema-generation.scripts.create-target" value="${TOPJAVA_ROOT}/config/ddl/create.ddl"/>
-                    <entry key="javax.persistence.schema-generation.scripts.drop-target" value="${TOPJAVA_ROOT}/config/ddl/drop.ddl"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_ACTION}" value="drop-and-create"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_CREATE_TARGET}" value="${TOPJAVA_ROOT}/config/ddl/create.ddl"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_SCRIPTS_DROP_TARGET}" value="${TOPJAVA_ROOT}/config/ddl/drop.ddl"/>
+                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="create"/>
 -->
                 </map>
             </property>
