@@ -1,4 +1,3 @@
-<%@ page session="false" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -17,16 +16,16 @@
         <form:form modelAttribute="userTo" class="form-horizontal" method="post" action="${register ? 'register' : 'profile'}"
                    charset="utf-8" accept-charset="UTF-8">
 
-            <spring:message code="users.name" var="userName"/>
+            <spring:message code="user.name" var="userName"/>
             <topjava:inputField label='${userName}' name="name"/>
 
-            <spring:message code="users.email" var="userEmail"/>
+            <spring:message code="user.email" var="userEmail"/>
             <topjava:inputField label='${userEmail}' name="email"/>
 
-            <spring:message code="users.password" var="userPassword"/>
+            <spring:message code="user.password" var="userPassword"/>
             <topjava:inputField label='${userPassword}' name="password" inputType="password"/>
 
-            <spring:message code="users.caloriesPerDay" var="caloriesPerDay"/>
+            <spring:message code="user.caloriesPerDay" var="caloriesPerDay"/>
             <topjava:inputField label='${caloriesPerDay}' name="caloriesPerDay" inputType="number"/>
 
             <div class="form-group">

@@ -6,11 +6,12 @@ public class Profiles {
             JPA = "jpa",
             DATAJPA = "datajpa";
 
-    public static final String REPOSITORY_IMPLEMENTATION = JPA;
+    public static final String REPOSITORY_IMPLEMENTATION = DATAJPA;
 
-    private static final String
+    public static final String
             POSTGRES_DB = "postgres",
-            HSQL_DB = "hsqldb";
+            HSQL_DB = "hsqldb",
+            HEROKU = "heroku";
 
 //  Get DB profile depending of DB driver in classpath
     public static String getActiveDbProfile() {

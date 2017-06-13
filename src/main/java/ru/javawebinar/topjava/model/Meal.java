@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.util.DateTimeUtil;
@@ -35,17 +36,18 @@ public class Meal extends BaseEntity {
     public static final String GET_BETWEEN = "Meal.getBetween";
 
     @Column(name = "date_time", nullable = false)
-    @NotNull(groups = {View.ValidatedUI.class, Default.class})
+    @NotNull(groups = {View.ValidatedRestUI.class, Default.class})
     @JsonView(View.JsonREST.class)
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
-    @NotBlank(groups = {View.ValidatedUI.class, Default.class})
+    @NotBlank(groups = {View.ValidatedRestUI.class, Default.class})
+    @SafeHtml(groups = {View.ValidatedRestUI.class})
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @Range(min = 10, max = 5000, groups = {View.ValidatedUI.class, Default.class})
-    @NotNull(groups = {View.ValidatedUI.class, Default.class})
+    @Range(min = 10, max = 5000, groups = {View.ValidatedRestUI.class, Default.class})
+    @NotNull(groups = {View.ValidatedRestUI.class, Default.class})
     private Integer calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
